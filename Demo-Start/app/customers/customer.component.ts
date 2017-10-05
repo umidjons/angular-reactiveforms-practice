@@ -69,6 +69,10 @@ export class CustomerComponent implements OnInit {
         emailControl.valueChanges.debounceTime(1000).subscribe(value => this.setMessage(emailControl));
     }
 
+    addAddress(): void {
+        this.addresses.push(this.buildAddress());
+    }
+
     buildAddress(): FormGroup {
         return this.fb.group({
                 addressType: 'home',

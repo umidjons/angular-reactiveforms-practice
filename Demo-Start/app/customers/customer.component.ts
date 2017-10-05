@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 
 import { Customer } from './customer';
@@ -45,6 +45,10 @@ export class CustomerComponent implements OnInit {
 
     constructor(private fb: FormBuilder) { }
 
+    get addresses(): FormArray {
+        return <FormArray>this.customerForm.get('addresses');
+    }
+
     ngOnInit(): void {
         this.customerForm = this.fb.group({
             firstName: ['', [Validators.required, Validators.minLength(3)]],
@@ -57,7 +61,7 @@ export class CustomerComponent implements OnInit {
             notification: 'email',
             rating: ['', ratingRange(1, 5)],
             sendCatalog: true,
-            addresses: this.buildAddress()
+            addresses: this.fb.array([this.buildAddress()])
         });
 
         this.customerForm.get('notification').valueChanges.subscribe(value => this.setNotification(value));
